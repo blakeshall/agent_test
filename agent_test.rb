@@ -10,7 +10,7 @@ require 'csv'
 def process_test(command)
   # When given a path, the pid is the subshell pid not the command pid
   pid = Process.spawn(command)
-  process = Open3.capture2("ps -e -o pid,user,start,comm,cmd -q #{pid}")
+  process = Open3.capture2("ps -e -o pid,user,start,comm,command | grep #{pid}")
   match = process.first.match(/#{Regexp.quote(pid.to_s)}\s*(\w*)\s*(\S*)\s*(\S*)\s*(\S.*)/)
   @log_file << ["Process Spawn", match[2], match[1], match[3], match[4], pid, nil]
 end
